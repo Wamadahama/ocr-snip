@@ -17,7 +17,7 @@ Debian 8 but any linux machine should be able to run it with all dependencies. C
 git clone https://www.github.com/wamadahama/ocr-snip
 cd ocr-snip
 sudo ./install.sh
-python 
+python snip.py
 ```
 
 # Moving forward 
