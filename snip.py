@@ -12,7 +12,7 @@ from io import BytesIO
 
 
 import tkinter
-from tkinter import Frame
+from tkinter import Frame, Canvas,BOTH
 
 pf = platform.system()
 fname = 'temp'
@@ -24,16 +24,22 @@ class Selection:
     def __init__(self, root):
         #                    x1 y1 x2 y2
         self.bounding_box = [0,0, 0,0]
+        self.is_selecting = False
         self.root = root
         self.root.wait_visibility(root)
         self.root.wm_attributes("-alpha", 0.5)
         self.root.wm_attributes('-fullscreen', True)
         self.root.bind("<Button-1>", self.start_capture)
+        self.root.bind("<B1-Motion>", self.draw_box)
         self.root.bind("<ButtonRelease-1>", self.stop_capture)
+        self.root.title("ocr-snip")
+        self.current_rect = None
+        self.canvas = Canvas(self.root)
         self.root.mainloop()
 
     def start_capture(self, event):
         print("{} {}".format(event.x, event.y))
+        self.is_selecting = True 
         self.bounding_box[0] = event.x
         self.bounding_box[1] = event.y
 
@@ -53,6 +59,15 @@ class Selection:
         print(bounding_box)
 
         self.root.destroy() #self.root.withdraw()
+    def draw_box(self, event):
+        x1,y1 = self.bounding_box[0], self.bounding_box[1]
+        x2,y2 = event.x, event.y
+        if self.is_selecting == True:
+            self.canvas.delete(self.current_rect)
+            self.current_rect = self.canvas.create_rectangle(x1, y1, x2,y2, outline="#111", fill="#f66", width=1)
+            self.canvas.pack(fill=BOTH, expand=1)
+
+            
 
 def capture(bounding_box):
     if pf == 'Windows' or pf == 'Darwin':
