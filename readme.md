@@ -23,4 +23,4 @@ python snip.py
 # Moving forward 
 * My own OCR algorithm 
 * More than QT bindings
-* Draw an actual box during selection 
+* ~~Draw an actual box during selection~~
